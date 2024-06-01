@@ -1,4 +1,4 @@
-use std::{io::BufWriter, net::TcpListener};
+use std::{io::{BufWriter, Write}, net::TcpListener};
 
 fn main() {
     
@@ -8,11 +8,7 @@ fn main() {
         match stream {
             Ok(_stream) => {
                 println!("accepted new connection");
-                let response = "HTTP/1.1 200 OK\r\n\r\n";
-                let mut buf = BufWriter::new(response);
-                println!("{}", buf.buffer());
-
-                // _stream.write(buf);
+                _stream.write("bHTTP/1.1 200 OK\r\n\r\n");
             }
             Err(e) => {
                 println!("error: {}", e);
