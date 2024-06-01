@@ -11,6 +11,7 @@ fn main() {
                 let response = "HTTP/1.1 200 OK\r\n\r\n";
                 let mut buf = BufWriter::new(response);
                 println!(buf.buffer());
+                
                 // _stream.write(buf);
             }
             Err(e) => {
