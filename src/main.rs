@@ -6,9 +6,9 @@ fn main() {
     
     for stream in listener.incoming() {
         match stream {
-            Ok(_stream) => {
+            Ok(mut _stream) => {
                 println!("accepted new connection");
-                _stream.write("bHTTP/1.1 200 OK\r\n\r\n");
+                _stream.write(b"HTTP/1.1 200 OK\r\n\r\n");
             }
             Err(e) => {
                 println!("error: {}", e);
