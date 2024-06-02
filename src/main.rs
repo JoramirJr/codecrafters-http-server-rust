@@ -22,7 +22,7 @@ fn main() {
                 let _path = req_tokens.next().unwrap();
 
                 match _path.chars().next().unwrap() {
-                    "/" => {
+                    '/' => {
                         let split_segs = _path.split("/");
                         println!("Split Segments: {:?}", split_segs);
                         let _ = _stream.write(b"HTTP/1.1 200 OK\r\n\r\n");
