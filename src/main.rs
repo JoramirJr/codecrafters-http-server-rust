@@ -10,7 +10,7 @@ fn main() {
         match stream {
             Ok(mut _stream) => {
                 println!("accepted new connection");
-                // let mut request = String::new();
+                let mut request = String::new();
                 let _ = _stream.read_to_string(&mut request);
 
                 // let mut req_tokens = request.split_whitespace();
