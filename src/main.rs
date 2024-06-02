@@ -12,7 +12,7 @@ fn main() {
                 println!("accepted new connection");
                 let mut buf = String::new();
                 let _ = _stream.read_to_string(buf);
-                let request: Result<String, std::string::FromUtf8Error> = String::from_utf8(buf);
+                let request = String::from_utf8(&mut buf);
 
                 match request {
                     Ok(mut _request) => {
