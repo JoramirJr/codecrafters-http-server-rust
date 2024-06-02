@@ -28,12 +28,12 @@ fn main() {
                         //         let _ = _stream.write(b"HTTP/1.1 404 Not Found\r\n\r\n");
                         //     }
                         // }
-                        let _ = _stream.write(b"HTTP/1.1 404 Not Found\r\n\r\n");
                     }
                     Err(e) => {
                         println!("error: {}", e);
                     }
                 }
+                let _ = _stream.write(b"HTTP/1.1 404 Not Found\r\n\r\n");
             }
             Err(e) => {
                 println!("error: {}", e);
