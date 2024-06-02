@@ -18,7 +18,7 @@ fn main() {
                         let mut req_tokens = _request.split_whitespace();
                         let first = req_tokens.next();
                         print!("Path: {:?}", first);
-                        let _path = req_tokens.next();
+                        // let _path = req_tokens.next();
 
                         // match path {
                         //     "/" => {
