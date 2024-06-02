@@ -20,7 +20,7 @@ fn main() {
                         let _ = req_tokens.next();
                         let _path = req_tokens.next();
 
-                        match path {
+                        match _path {
                             "/" => {
                                 let _ = _stream.write(b"HTTP/1.1 200 OK\r\n\r\n");
                             }
