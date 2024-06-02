@@ -14,18 +14,19 @@ fn main() {
                 let mut clone_stream = _stream.try_clone().unwrap();
                 let _ = clone_stream.read_to_string(&mut request);
 
-                let mut req_tokens = request.split_whitespace();
-                let _ = req_tokens.next();
-                let _path = req_tokens.next().unwrap();
+                // let mut req_tokens = request.split_whitespace();
+                // let _ = req_tokens.next();
+                // let _path = req_tokens.next().unwrap();
 
-                match _path {
-                    "/" => {
-                        let _ = _stream.write(b"HTTP/1.1 200 OK\r\n\r\n");
-                    }
-                    _ => {
-                        let _ = _stream.write(b"HTTP/1.1 404 Not Found\r\n\r\n");
-                    }
-                }
+                // match _path {
+                //     "/" => {
+                //         let _ = _stream.write(b"HTTP/1.1 200 OK\r\n\r\n");
+                //     }
+                //     _ => {
+                //         let _ = _stream.write(b"HTTP/1.1 404 Not Found\r\n\r\n");
+                //     }
+                // }
+                let _ = _stream.write(b"HTTP/1.1 200 OK\r\n\r\n");
             }
             Err(e) => {
                 println!("error: {}", e);
