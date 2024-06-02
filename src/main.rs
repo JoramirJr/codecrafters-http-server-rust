@@ -21,7 +21,7 @@ fn main() {
                 let _ = req_tokens.next();
                 let _path = req_tokens.next().unwrap();
 
-                match _path.chars().next() {
+                match _path.chars().next().unwrap() {
                     "/" => {
                         let split_segs = _path.split("/");
                         println!("Split Segments: {:?}", split_segs);
