@@ -22,8 +22,8 @@ fn main() {
 
                         println!("str ref: {:?}", &_path);
 
-                        match &_path {
-                            "/" => {
+                        match _path {
+                            String::from("/") => {
                                 let _ = _stream.write(b"HTTP/1.1 200 OK\r\n\r\n");
                             }
                             _ => {
