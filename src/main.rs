@@ -12,20 +12,19 @@ fn main() {
                 println!("accepted new connection");
                 let mut buffer = [0; 10];
                 let _ = _stream.read(&mut buffer);
-                let request = String::from_utf8(buffer.to_vec());
-                println!("REQUEST: {:?}", request);
-                // let mut req_tokens = request.split_whitespace();
-                // let _ = req_tokens.next();
-                // let _path = req_tokens.next().unwrap();
+                let request = String::from_utf8(buffer.to_vec()).unwrap();
+                let mut req_tokens = request.split_whitespace();
+                let _ = req_tokens.next();
+                let _path = req_tokens.next().unwrap();
 
-                // match _path {
-                //     "/" => {
-                //         let _ = _stream.write(b"HTTP/1.1 200 OK\r\n\r\n");
-                //     }
-                //     _ => {
-                //         let _ = _stream.write(b"HTTP/1.1 404 Not Found\r\n\r\n");
-                //     }
-                // }
+                match _path {
+                    "/" => {
+                        let _ = _stream.write(b"HTTP/1.1 200 OK\r\n\r\n");
+                    }
+                    _ => {
+                        let _ = _stream.write(b"HTTP/1.1 404 Not Found\r\n\r\n");
+                    }
+                }
                 let _ = _stream.write(b"HTTP/1.1 200 OK\r\n\r\n");
             }
             Err(e) => {
