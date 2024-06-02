@@ -10,8 +10,30 @@ fn main() {
                 println!("accepted new connection");
                 let mut buf = Vec::new();
                 _stream.read_to_end(&mut buf);
-                    println!("incoming structure/HTTP: {:?}", String::from_utf8(buf));
-                // let _ = _stream.write(b"HTTP/1.1 200 OK\r\n\r\n");
+                let request = String::from_utf8(buf);
+
+                match request {
+                    Ok(mut _request) => {
+                        //exp: GET /banana HTTP/1.1\r\nHost: localhost:4221\r\n\r\n
+                        let mut req_tokens = _request.split_whitespace();
+                        let _ = req_tokens.next();
+                        let path = req_tokens.next().unwrap();
+
+                        match path {
+                            "/" => {
+                                _stream.write(b"HTTP/1.1 200 OK\r\n\r\n");
+                            }
+                            _ => {
+                                _stream.write(b"HTTP/1.1 404 Not Found\r\n\r\n");
+                            }   
+                        }
+                    }
+                    Err(e) => {
+                        println!("error: {}", e);
+                    }
+                }
+
+                let _ = _stream.write(b"HTTP/1.1 200 OK\r\n\r\n");
             }
             Err(e) => {
                 println!("error: {}", e);
