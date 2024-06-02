@@ -17,7 +17,7 @@ fn main() {
                         //exp: GET /banana HTTP/1.1\r\nHost: localhost:4221\r\n\r\n
                         let mut req_tokens = _request.split_whitespace();
                         let _ = req_tokens.next();
-                        let path = req_tokens.next().unwrap();
+                        let path = req_tokens.next();
                         print!("Path: {:?}", path);
 
                         // match path {
