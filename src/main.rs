@@ -22,11 +22,9 @@ fn main() {
 
                         match _path {
                             "/" => {
-                                println!("slash only");
                                 let _ = _stream.write(b"HTTP/1.1 200 OK\r\n\r\n");
                             }
                             _ => {
-                                println!("error case");
                                 let _ = _stream.write(b"HTTP/1.1 404 Not Found\r\n\r\n");
                             }
                         }
