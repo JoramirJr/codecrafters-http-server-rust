@@ -3,6 +3,10 @@ use std::{
     net::TcpListener,
 };
 
+fn extract_str_and_len(){
+
+}
+
 fn main() {
     let listener = TcpListener::bind("127.0.0.1:4221").unwrap();
 
@@ -17,8 +21,10 @@ fn main() {
                 let _ = req_tokens.next();
                 let _path = req_tokens.next().unwrap();
 
-                match _path {
+                match _path.chars().next() {
                     "/" => {
+                        let split_segs = _path.split("/");
+                        println!("Split Segments: {:?}", split_segs);
                         let _ = _stream.write(b"HTTP/1.1 200 OK\r\n\r\n");
                     }
                     _ => {
