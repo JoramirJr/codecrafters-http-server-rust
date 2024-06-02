@@ -18,7 +18,7 @@ fn main() {
                     Ok(mut _request) => {
                         let mut req_tokens = _request.split_whitespace();
                         let _ = req_tokens.next();
-                        let _path = req_tokens.next();
+                        let _path = req_tokens.next().unwrap();
 
                         match _path {
                             "/" => {
