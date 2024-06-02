@@ -9,7 +9,7 @@ fn main() {
             Ok(mut _stream) => {
                 println!("accepted new connection");
                 let mut buf = Vec::new();
-                _stream.read_to_end(&mut buf);
+                let _ =_stream.read_to_end(&mut buf);
                 let request = String::from_utf8(buf);
 
                 match request {
@@ -19,12 +19,14 @@ fn main() {
                         let _ = req_tokens.next();
                         let path = req_tokens.next().unwrap();
 
+                        print!("{}", path);
+
                         match path {
                             "/" => {
-                                _stream.write(b"HTTP/1.1 200 OK\r\n\r\n");
+                                let _ = _stream.write(b"HTTP/1.1 200 OK\r\n\r\n");
                             }
                             _ => {
-                                _stream.write(b"HTTP/1.1 404 Not Found\r\n\r\n");
+                                let _ = _stream.write(b"HTTP/1.1 404 Not Found\r\n\r\n");
                             }   
                         }
                     }
