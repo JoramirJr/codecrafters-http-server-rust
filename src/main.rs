@@ -16,8 +16,8 @@ fn main() {
                     Ok(mut _request) => {
                         //exp: GET /banana HTTP/1.1\r\nHost: localhost:4221\r\n\r\n
                         let mut req_tokens = _request.split_whitespace();
-                        println!("First Segment:");
                         let first_seg = req_tokens.next();
+                        println!("First Segment: {}", first_seg);
                         // let _path = req_tokens.next();
 
                         // match path {
