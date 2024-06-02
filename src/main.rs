@@ -12,7 +12,7 @@ fn main() {
                 println!("accepted new connection");
                 let mut buffer = [0; 10];
                 let _ = _stream.read(&mut buffer);
-                let request = String::from(buffer);
+                let request = String::from_utf8(buffer.to_vec());
                 println!("REQUEST: {:?}", request);
                 // let mut req_tokens = request.split_whitespace();
                 // let _ = req_tokens.next();
