@@ -23,7 +23,7 @@ fn main() {
 
                 match _path.chars().next().unwrap() {
                     '/' => {
-                        let split_segs: Vec<char> = _path.split("/").collect();
+                        let split_segs: Vec<&str> = _path.split("/").collect();
                         println!("Split Segments: {:?}", split_segs);
                         let _ = _stream.write(b"HTTP/1.1 200 OK\r\n\r\n");
                     }
