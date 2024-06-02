@@ -11,7 +11,7 @@ fn main() {
             Ok(mut _stream) => {
                 println!("accepted new connection");
                 let mut request = String::new();
-                // let mut clone_stream = _stream.try_clone().unwrap();
+                let mut clone_stream = _stream.try_clone().unwrap();
                 // let _ = clone_stream.read_to_string(&mut request);
 
                 // let mut req_tokens = request.split_whitespace();
