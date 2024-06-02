@@ -18,9 +18,11 @@ fn main() {
                     Ok(mut _request) => {
                         let mut req_tokens = _request.split_whitespace();
                         let _ = req_tokens.next();
-                        let _path = req_tokens.next().unwrap();
+                        let _path = req_tokens.next().unwrap().to_owned();
 
-                        match _path {
+                        println!("str ref: {:?}", &_path);
+
+                        match &_path {
                             "/" => {
                                 let _ = _stream.write(b"HTTP/1.1 200 OK\r\n\r\n");
                             }
