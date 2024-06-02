@@ -13,23 +13,16 @@ fn main() {
                 let mut request = String::new();
                 let _ = _stream.read_to_string(&mut request);
 
-                match request {
-                    Ok(mut _request) => {
-                        let mut req_tokens = _request.split_whitespace();
-                        let _ = req_tokens.next();
-                        let _path = req_tokens.next().unwrap();
+                let mut req_tokens = _request.split_whitespace();
+                let _ = req_tokens.next();
+                let _path = req_tokens.next().unwrap();
 
-                        match _path {
-                            "/" => {
-                                let _ = _stream.write(b"HTTP/1.1 200 OK\r\n\r\n");
-                            }
-                            _ => {
-                                let _ = _stream.write(b"HTTP/1.1 404 Not Found\r\n\r\n");
-                            }
-                        }
+                match _path {
+                    "/" => {
+                        let _ = _stream.write(b"HTTP/1.1 200 OK\r\n\r\n");
                     }
-                    Err(e) => {
-                        println!("error: {}", e);
+                    _ => {
+                        let _ = _stream.write(b"HTTP/1.1 404 Not Found\r\n\r\n");
                     }
                 }
             }
