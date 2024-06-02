@@ -11,7 +11,7 @@ fn main() {
             Ok(mut _stream) => {
                 println!("accepted new connection");
                 let mut request = [0; 10];
-                let _ = _stream.read(request).unwrap().to_string();
+                let _ = _stream.read(&mut request).unwrap().to_string();
                 println!("REQUEST: {:?}", request);
                 // let mut req_tokens = request.split_whitespace();
                 // let _ = req_tokens.next();
