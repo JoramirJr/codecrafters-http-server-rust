@@ -10,7 +10,7 @@ fn main() {
                 println!("accepted new connection");
                 let mut buf = Vec::new();
                 _stream.read_to_end(&mut buf);
-                    println!("incoming structure/HTTP: {}", String::from_utf8(buf));
+                    println!("incoming structure/HTTP: {:?}", String::from_utf8(buf));
                 // let _ = _stream.write(b"HTTP/1.1 200 OK\r\n\r\n");
             }
             Err(e) => {
