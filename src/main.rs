@@ -8,6 +8,8 @@ fn main() {
         match stream {
             Ok(mut _stream) => {
                 println!("accepted new connection");
+                let req = _stream.read_to_string();
+                println!(req);
                 let _ = _stream.write(b"HTTP/1.1 200 OK\r\n\r\n");
             }
             Err(e) => {
