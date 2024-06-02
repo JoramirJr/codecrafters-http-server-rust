@@ -20,14 +20,14 @@ fn main() {
                         // let _ = req_tokens.next();
                         // let path = req_tokens.next().unwrap();
 
-                        match path {
-                            "/" => {
-                                let _ = _stream.write(b"HTTP/1.1 200 OK\r\n\r\n");
-                            }
-                            _ => {
-                                let _ = _stream.write(b"HTTP/1.1 404 Not Found\r\n\r\n");
-                            }   
-                        }
+                        // match path {
+                        //     "/" => {
+                        //         let _ = _stream.write(b"HTTP/1.1 200 OK\r\n\r\n");
+                        //     }
+                        //     _ => {
+                        //         let _ = _stream.write(b"HTTP/1.1 404 Not Found\r\n\r\n");
+                        //     }   
+                        // }
                     }
                     Err(e) => {
                         println!("error: {}", e);
