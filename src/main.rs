@@ -10,9 +10,8 @@ fn main() {
         match stream {
             Ok(mut _stream) => {
                 println!("accepted new connection");
-                let mut buf = String::new();
-                let _ = _stream.read_to_string(buf);
-                let request = String::from_utf8(&mut buf);
+                let mut request = String::new();
+                let _ = _stream.read_to_string(&mut request);
 
                 match request {
                     Ok(mut _request) => {
