@@ -1,5 +1,5 @@
 use std::{
-    io::{Read, Write},
+    io::{BufWriter, Read, Write},
     net::TcpListener,
 };
 
@@ -10,9 +10,9 @@ fn main() {
         match stream {
             Ok(mut _stream) => {
                 println!("accepted new connection");
-                let mut request = String::new();
-                let _ = _stream.read_to_string(&mut request);
-
+                let mut request = [0; 10];
+                let _ = _stream.read(request).unwrap().to_string();
+                println!("REQUEST: {:?}", request);
                 // let mut req_tokens = request.split_whitespace();
                 // let _ = req_tokens.next();
                 // let _path = req_tokens.next().unwrap();
