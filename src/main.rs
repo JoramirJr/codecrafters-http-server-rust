@@ -1,11 +1,11 @@
 use std::{
-    io::{BufWriter, Read, Write},
+    io::{Read, Write},
     net::TcpListener,
 };
 
-fn extract_str_and_len(){
+// fn extract_str_and_len(){
 
-}
+// }
 
 fn main() {
     let listener = TcpListener::bind("127.0.0.1:4221").unwrap();
@@ -24,7 +24,7 @@ fn main() {
                 match _path.chars().next().unwrap() {
                     '/' => {
                         let split_segs: Vec<&str> = _path.split("/").collect();
-                        println!("Split Segments: {:?}", split_segs);
+                        println!("Path: {:?}", _path);
                         //
                         let _ = _stream.write(b"HTTP/1.1 200 OK\r\n\r\n");
                     }
