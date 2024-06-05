@@ -24,7 +24,13 @@ fn main() {
                 match _path.chars().next().unwrap() {
                     '/' => {
                         let split_segs: Vec<&str> = _path.split("/").collect();
-                        println!("Req Tokens: {:?}", req_tokens);
+                        let split_segs_noblank: Vec<&str> = [];
+                        for seg in split_segs.into_iter() {
+                                if seg != "" {
+                                    split_segs_noblank.push(seg);
+                                }
+                        } 
+                        println!("Split Segs [no blank]: {:?}", split_segs_noblank);
                         //
                         let _ = _stream.write(b"HTTP/1.1 200 OK\r\n\r\n");
                     }
