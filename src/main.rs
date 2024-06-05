@@ -24,7 +24,7 @@ fn main() {
                 match _path.chars().next().unwrap() {
                     '/' => {
                         let split_segs: Vec<&str> = _path.split("/").collect();
-                        let split_segs_noblank: Vec<&str> = [];
+                        let mut split_segs_noblank = Vec::new();
                         for seg in split_segs.into_iter() {
                                 if seg != "" {
                                     split_segs_noblank.push(seg);
