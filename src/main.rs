@@ -29,7 +29,7 @@ fn main() {
                 let _ = req_tokens.next();
                 let _path = req_tokens.next().unwrap();
 
-                println!("Req Tokens: {:?}", req_tokens);
+                println!("Request: {:?}", request);
 
                 match _path.chars().next().unwrap() {
                     '/' => {
