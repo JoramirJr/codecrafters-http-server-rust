@@ -3,8 +3,8 @@ use std::{
     net::TcpListener,
 };
 
-struct ExtractStrAndLenReturn {
-    body: &str,
+struct ExtractStrAndLenReturn<'a> {
+    body: &'a str,
     content_length: usize,
 }
 
