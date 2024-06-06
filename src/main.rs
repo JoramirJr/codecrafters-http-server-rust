@@ -3,12 +3,20 @@ use std::{
     net::TcpListener,
 };
 
-fn extract_str_and_len(){
+struct ExtractStrAndLenReturn {
+    body: &str,
+    content_length: u32,
+}
 
+fn extract_str_and_len(route_segments: Vec<&str>) -> ExtractStrAndLenReturn {
+    ExtractStrAndLenReturn {
+        body: route_segments[1],
+        content_length: route_segments[1].len(),
+    }
 }
 
 fn main() {
-    let listener = TcpListener::bind("127.0.0.1:4221").unwrap();
+    let listener: TcpListener = TcpListener::bind("127.0.0.1:4221").unwrap();
 
     for stream in listener.incoming() {
         match stream {
@@ -24,15 +32,23 @@ fn main() {
                 match _path.chars().next().unwrap() {
                     '/' => {
                         let split_segs: Vec<&str> = _path.split("/").collect();
-                        let mut split_segs_noblank = Vec::new();
+                        let mut split_segs_noblank: Vec<&str> = Vec::new();
                         for seg in split_segs.into_iter() {
-                                if seg != "" {
-                                    split_segs_noblank.push(seg);
-                                }
-                        } 
-                        println!("Split Segs [no blank]: {:?}", split_segs_noblank);
-                        //
-                        let _ = _stream.write(b"HTTP/1.1 200 OK\r\n\r\n");
+                            if seg != "" {
+                                split_segs_noblank.push(seg);
+                            }
+                        }
+                        if split_segs_noblank.len() == 1 {
+                            let _ = _stream.write(b"HTTP/1.1 200 OK\r\n\r\n");
+                        } else {
+                            let ExtractStrAndLenReturn {
+                                body,
+                                content_length,
+                            } = extract_str_and_len(split_segs_noblank);
+                            //HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: 3\r\n\r\nabc
+                            let response = format!("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: {}\r\n\r\n{}", content_length, body).as_bytes();
+                            let _ = _stream.write(response);
+                        }
                     }
                     _ => {
                         let _ = _stream.write(b"HTTP/1.1 404 Not Found\r\n\r\n");
