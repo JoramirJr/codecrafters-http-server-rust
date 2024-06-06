@@ -5,7 +5,7 @@ use std::{
 
 struct ExtractStrAndLenReturn {
     body: &str,
-    content_length: u32,
+    content_length: usize,
 }
 
 fn extract_str_and_len(route_segments: Vec<&str>) -> ExtractStrAndLenReturn {
