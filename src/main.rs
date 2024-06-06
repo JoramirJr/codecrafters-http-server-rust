@@ -29,6 +29,8 @@ fn main() {
                 let _ = req_tokens.next();
                 let _path = req_tokens.next().unwrap();
 
+                println!("Req Tokens: {}", req_tokens);
+
                 match _path.chars().next().unwrap() {
                     '/' => {
                         let split_segs: Vec<&str> = _path.split("/").collect();
