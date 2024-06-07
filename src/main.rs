@@ -25,13 +25,10 @@ fn main() {
         match stream {
             Ok(mut _stream) => {
                 println!("accepted new connection");
-                let stream_bytes = _stream
-                    .borrow()
-                    .bytes()
-                    .map(|bytes_result: Result<u8, std::io::Error>| bytes_result.unwrap())
-                    .collect_vec();
 
-                let request = String::from_utf8(stream_bytes).unwrap();
+                let mut buf = [0; 1024];
+                let _ = _stream.read(&mut buf);
+                let request = String::from_utf8_lossy(&buf[..]);
                 let mut req_tokens = request.split_whitespace();
                 let _ = req_tokens.next();
                 let _path = req_tokens.next().unwrap();
