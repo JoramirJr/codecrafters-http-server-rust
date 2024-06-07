@@ -25,12 +25,12 @@ fn main() {
         match stream {
             Ok(mut _stream) => {
                 println!("accepted new connection");
-                let stream_bytes: Vec<u8> = Vec::from_iter(
-                    _stream
-                        .borrow_mut()
-                        .bytes()
-                        .map(|bytes_result: Result<u8, std::io::Error>| bytes_result.unwrap()),
-                );
+                // let stream_bytes: Vec<u8> = Vec::from_iter(
+                //     _stream
+                //         .borrow_mut()
+                //         .bytes()
+                //         .map(|bytes_result: Result<u8, std::io::Error>| bytes_result.unwrap()),
+                // );
                 let stream_bytes =_stream
                         .borrow_mut()
                         .bytes()
