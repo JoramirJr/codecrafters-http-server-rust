@@ -39,20 +39,16 @@ fn main() {
 
                 match _path.chars().next().unwrap() {
                     '/' => {
-                        let split_segs: Vec<&str> = _path.split("/").collect();
-                        let mut split_segs_noblank: Vec<&str> = Vec::new();
-                        for seg in split_segs.into_iter() {
-                            if seg != "" {
-                                split_segs_noblank.push(seg);
-                            }
-                        }
-                        if split_segs_noblank.len() == 1 {
+                        let split_segs: Vec<&str> =
+                            _path.split("/").filter(|seg| *seg != "").collect();
+
+                        if split_segs.len() == 1 {
                             let _ = _stream.write(b"HTTP/1.1 200 OK\r\n\r\n");
                         } else {
                             let ExtractStrAndLenReturn {
                                 body,
                                 content_length,
-                            } = extract_str_and_len(split_segs_noblank);
+                            } = extract_str_and_len(split_segs);
                             //  HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: 3\r\n\r\nabc
                             let response = format!("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: {}\r\n\r\n{}", content_length, body);
                             let _ = _stream.write(response.as_bytes());
