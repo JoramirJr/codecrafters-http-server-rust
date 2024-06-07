@@ -36,10 +36,12 @@ fn main() {
                 match _path.chars().next().unwrap() {
                     '/' => {
                         let split_segs: Vec<&str> =
-                            "/".split("/").filter(|seg| *seg != "").collect();
+                            _path.split("/").filter(|seg| *seg != "").collect();
                         println!("split segs: {:?}", split_segs);
-                        if split_segs.len() == 1 {
-                            let _ = _stream.write(b"HTTP/1.1 200 OK\r\n\r\n");
+                        let _ = _stream.write(b"HTTP/1.1 200 OK\r\n\r\n");
+                        if split_segs.len() == 0 {
+                        } else if split_segs.len() == 1 {
+                            let _ = _stream.write(b"HTTP/1.1 404 Not Found\r\n\r\n");
                         } else {
                             let ExtractStrAndLenReturn {
                                 body,
