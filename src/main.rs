@@ -1,5 +1,5 @@
 use std::{
-    borrow::Borrow,
+    borrow::{Borrow, BorrowMut},
     io::{Read, Write},
     net::TcpListener,
 };
@@ -29,6 +29,7 @@ fn main() {
                     .borrow()
                     .bytes()
                     .map(|bytes_result: Result<u8, std::io::Error>| bytes_result.unwrap())
+                    .borrow_mut()
                     .collect_vec();
                 let request = String::from_utf8(stream_bytes).unwrap();
                 let mut req_tokens = request.split_whitespace();
@@ -50,7 +51,6 @@ fn main() {
                             let response = format!("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: {}\r\n\r\n{}", content_length, body);
                             println!("Response: {:?}", response);
                             // let _ = _stream.write(response.as_bytes());
-                            let _ = _stream.write(b"HTTP/1.1 404 Not Found\r\n\r\n");
                         }
                     }
                     _ => {
