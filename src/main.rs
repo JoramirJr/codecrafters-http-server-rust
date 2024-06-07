@@ -26,8 +26,8 @@ fn main() {
             Ok(mut _stream) => {
                 println!("accepted new connection");
                  let stream_bytes = _stream
-                     .borrow();
-                //     .bytes()
+                     .borrow()
+                     .bytes();
                 //     .map(|bytes_result: Result<u8, std::io::Error>| bytes_result.unwrap())
                 //     .collect_vec();
                 // let request = String::from_utf8(stream_bytes).unwrap();
