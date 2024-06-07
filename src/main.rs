@@ -35,13 +35,11 @@ fn main() {
                 let _ = req_tokens.next();
                 let _path = req_tokens.next().unwrap();
 
-                println!("Request: {:?}", request);
-
                 match _path.chars().next().unwrap() {
                     '/' => {
                         let split_segs: Vec<&str> =
                             _path.split("/").filter(|seg| *seg != "").collect();
-
+                        println!("Split Segs: {:?}", split_segs);
                         if split_segs.len() == 1 {
                             let _ = _stream.write(b"HTTP/1.1 200 OK\r\n\r\n");
                         } else {
