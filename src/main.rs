@@ -26,8 +26,6 @@ fn main() {
             Ok(mut _stream) => {
                 println!("accepted new connection");
                 let stream_bytes_iter = _stream
-                    .try_clone()
-                    .unwrap()
                     .bytes()
                     .map(|bytes_result: Result<u8, std::io::Error>| bytes_result.unwrap());
                 // let mut stream_bytes: Vec<u8> = Vec::new();
