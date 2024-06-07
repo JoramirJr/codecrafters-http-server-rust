@@ -22,7 +22,7 @@ fn main() {
         match stream {
             Ok(mut _stream) => {
                 println!("accepted new connection");
-                let mut buffer = [0; 10];
+                let mut buffer = [0; 100];
                 let _ = _stream.read(&mut buffer);
                 // let _ = _stream.read(&mut buffer);
                 let request = String::from_utf8(buffer.to_vec()).unwrap();
