@@ -30,10 +30,10 @@ fn main() {
                     .unwrap()
                     .bytes()
                     .map(|bytes_result: Result<u8, std::io::Error>| bytes_result.unwrap());
-                let mut stream_bytes: Vec<u8> = Vec::new();
-                for byte in stream_bytes_iter {
-                    stream_bytes.push(byte);
-                }
+                // let mut stream_bytes: Vec<u8> = Vec::new();
+                // for byte in stream_bytes_iter {
+                //     stream_bytes.push(byte);
+                // }
 
                 // let request = String::from_utf8(stream_bytes).unwrap();
                 // let mut req_tokens = request.split_whitespace();
