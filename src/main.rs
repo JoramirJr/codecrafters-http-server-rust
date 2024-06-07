@@ -30,7 +30,7 @@ fn main() {
                 // let _ = req_tokens.next();
                 // let _path = req_tokens.next().unwrap();
 
-                println!("Request: {:?}", request);
+                println!("Buffer: {:?}", buffer);
 
                 // match _path.chars().next().unwrap() {
                 //     '/' => {
