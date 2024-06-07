@@ -39,7 +39,6 @@ fn main() {
                     '/' => {
                         let split_segs: Vec<&str> =
                             _path.split("/").filter(|seg| *seg != "").collect();
-                        println!("Split Segs: {:?}", split_segs);
                         if split_segs.len() == 1 {
                             let _ = _stream.write(b"HTTP/1.1 200 OK\r\n\r\n");
                         } else {
@@ -49,6 +48,7 @@ fn main() {
                             } = extract_str_and_len(split_segs);
                             //  HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: 3\r\n\r\nabc
                             let response = format!("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: {}\r\n\r\n{}", content_length, body);
+                            println!("Response: {:?}", response);
                             let _ = _stream.write(response.as_bytes());
                         }
                     }
