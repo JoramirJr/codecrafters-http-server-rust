@@ -3,6 +3,8 @@ use std::{
     net::TcpListener,
 };
 
+use itertools::Itertools;
+
 struct ExtractStrAndLenReturn<'a> {
     body: &'a str,
     content_length: usize,
@@ -22,15 +24,19 @@ fn main() {
         match stream {
             Ok(mut _stream) => {
                 println!("accepted new connection");
-                let mut buffer = Vec::new();
-                let _ = _stream.read(&mut buffer);
+                let stream_bytes: Vec<u8> = _stream
+                    .bytes()
+                    .map(|bytes_result: Result<u8, std::io::Error>| bytes_result.unwrap())
+                    .collect_vec();
+                // let mut buffer = Vec::new(_stream.bytes());
                 // let _ = _stream.read(&mut buffer);
-                let request = String::from_utf8(buffer.to_vec()).unwrap();
+                // let _ = _stream.read(&mut buffer);
+                let request = String::from_utf8(stream_bytes).unwrap();
                 // let mut req_tokens = request.split_whitespace();
                 // let _ = req_tokens.next();
                 // let _path = req_tokens.next().unwrap();
 
-                println!("Buffer: {:?}", buffer);
+                println!("Request: {:?}", request);
 
                 // match _path.chars().next().unwrap() {
                 //     '/' => {
@@ -57,7 +63,7 @@ fn main() {
                 //         let _ = _stream.write(b"HTTP/1.1 404 Not Found\r\n\r\n");
                 //     }
                 // }
-                let _ = _stream.write(b"HTTP/1.1 200 OK\r\n\r\n");
+                // let _ = _stream.write(b"HTTP/1.1 200 OK\r\n\r\n");
             }
             Err(e) => {
                 println!("error: {}", e);
