@@ -25,11 +25,10 @@ fn main() {
         match stream {
             Ok(mut _stream) => {
                 println!("accepted new connection");
-                let stream_bytes: Vec<u8> = _stream
-                    .try_clone()
-                    .unwrap()
+                let _stream_clone = _stream.try_clone().unwrap();
+                let stream_bytes: Vec<u8> = _stream_clone
                     .bytes()
-                    .map(|bytes_result: Result<u8, std::io::Error>| bytes_result.unwrap())
+                    .map(|bytes_result| bytes_result.unwrap())
                     .collect_vec();
 
                 let request = String::from_utf8(stream_bytes).unwrap();
