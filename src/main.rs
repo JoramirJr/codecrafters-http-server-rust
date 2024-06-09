@@ -1,10 +1,7 @@
 use std::{
-    borrow::Borrow,
     io::{Read, Write},
     net::TcpListener,
 };
-
-use itertools::Itertools;
 
 struct ExtractStrAndLenReturn<'a> {
     body: &'a str,
@@ -50,7 +47,6 @@ fn main() {
                             let response = format!("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: {}\r\n\r\n{}", content_length, body);
                             println!("Response: {}", response);
                             let _ = _stream.write(response.as_bytes());
-                            //
                         }
                     }
                     _ => {
