@@ -14,7 +14,6 @@ fn extract_str_and_len(route_segments: Vec<&str>) -> ExtractStrAndLenReturn {
         content_length: route_segments[1].len(),
     }
 }
-
 fn main() {
     let listener: TcpListener = TcpListener::bind("127.0.0.1:4221").unwrap();
 
@@ -34,7 +33,7 @@ fn main() {
                     '/' => {
                         let split_segs: Vec<&str> =
                             _path.split("/").filter(|seg| *seg != "").collect();
-                        let _ = _stream.write(b"HTTP/1.1 200 OK\r\n\r\n");
+                        // let _ = _stream.write(b"HTTP/1.1 200 OK\r\n\r\n");
                         if split_segs.len() == 0 {
                         } else if split_segs.len() == 1 {
                             let _ = _stream.write(b"HTTP/1.1 404 Not Found\r\n\r\n");
