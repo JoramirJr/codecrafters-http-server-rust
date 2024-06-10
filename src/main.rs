@@ -33,8 +33,8 @@ fn main() {
                     '/' => {
                         let split_segs: Vec<&str> =
                             _path.split("/").filter(|seg| *seg != "").collect();
-                        // let _ = _stream.write(b"HTTP/1.1 200 OK\r\n\r\n");
                         if split_segs.len() == 0 {
+                            let _ = _stream.write(b"HTTP/1.1 200 OK\r\n\r\n");
                         } else if split_segs.len() == 1 {
                             let _ = _stream.write(b"HTTP/1.1 404 Not Found\r\n\r\n");
                         } else {
