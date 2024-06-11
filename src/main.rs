@@ -3,6 +3,8 @@ use std::{
     net::TcpListener,
 };
 
+use itertools::Itertools;
+
 fn main() {
     let listener: TcpListener = TcpListener::bind("127.0.0.1:4221").unwrap();
 
@@ -18,7 +20,7 @@ fn main() {
                 let _ = req_tokens.next();
                 let _path = req_tokens.next().unwrap();
 
-                println!("Request tokens: {:?}", req_tokens);
+                println!("Request: {:?}", request);
 
                 match _path.chars().next().unwrap() {
                     '/' => {
@@ -28,6 +30,7 @@ fn main() {
                             let _ = _stream.write(b"HTTP/1.1 200 OK\r\n\r\n");
                         } else if split_segs.len() == 1 {
                             if split_segs[0] == "user-agent" {
+                                let req_lines: Vec<&str> = request.split("\r\n").collect_vec();
                             } else {
                                 let _ = _stream.write(b"HTTP/1.1 404 Not Found\r\n\r\n");
                             }
