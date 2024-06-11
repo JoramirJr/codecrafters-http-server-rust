@@ -20,8 +20,6 @@ fn main() {
                 let _ = req_tokens.next();
                 let _path = req_tokens.next().unwrap();
 
-                println!("Request: {:?}", request);
-
                 match _path.chars().next().unwrap() {
                     '/' => {
                         let split_segs: Vec<&str> =
@@ -31,6 +29,10 @@ fn main() {
                         } else if split_segs.len() == 1 {
                             if split_segs[0] == "user-agent" {
                                 let req_lines: Vec<&str> = request.split("\r\n").collect_vec();
+                                let body = req_lines[2];
+                                let content_length = req_lines[2].len();
+                                let response = format!("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: {}\r\n\r\n{}", content_length, body);
+                                let _ = _stream.write(response.as_bytes());
                             } else {
                                 let _ = _stream.write(b"HTTP/1.1 404 Not Found\r\n\r\n");
                             }
@@ -38,7 +40,6 @@ fn main() {
                             let body = split_segs[1];
                             let content_length = split_segs[1].len();
                             let response = format!("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: {}\r\n\r\n{}", content_length, body);
-                            println!("Response: {}", response);
                             let _ = _stream.write(response.as_bytes());
                         }
                     }
