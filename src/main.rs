@@ -31,7 +31,7 @@ fn main() {
                                 let req_lines: Vec<&str> = request.split("\r\n").collect_vec();
                                 let body = req_lines[2];
                                 let user_agent = req_lines[2];
-                                let content_length = user_agent.split(": ").collect_vec()[1];
+                                let content_length = user_agent.split(": ").collect_vec()[1].len();
                                 let response = format!("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: {}\r\n\r\n{}", content_length, body);
                                 let _ = _stream.write(response.as_bytes());
                             } else {
