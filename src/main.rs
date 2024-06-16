@@ -1,9 +1,32 @@
 use std::{
     io::{Read, Write},
     net::TcpListener,
+    fs::File
 };
 
-use itertools::Itertools;
+struct RetrieveFileReturn<'a> {
+    content_type: &'a str,
+    content_length: u32
+};
+
+fn retrieve_file(path: &str) -> RetrieveFileReturn {
+    let dir_file: Result<File, std::io::Error> = File::open(path);
+
+    match dir_file {
+        Ok(dir_file) => {
+            let mut file_bytes_buf: Vec<u8> = Vec::new();
+            dir_file.read_to_end(&mut file_bytes_buf);
+            RetrieveFileReturn {
+                content_type: "application/octet-stream",
+                content_length: 0
+            }
+        },
+        Err(err) => {
+            
+        }
+    }
+
+}
 
 fn main() {
     let listener: TcpListener = TcpListener::bind("127.0.0.1:4221").unwrap();
@@ -21,7 +44,7 @@ fn main() {
                 let _path = req_tokens.next().unwrap();
 
                 match _path.chars().next().unwrap() {
-                    '/' => {
+                    '/' => {=
                         let split_segs: Vec<&str> =
                             _path.split("/").filter(|seg| *seg != "").collect();
                         if split_segs.len() == 0 {
@@ -38,10 +61,14 @@ fn main() {
                                 let _ = _stream.write(b"HTTP/1.1 404 Not Found\r\n\r\n");
                             }
                         } else {
-                            let body = split_segs[1];
-                            let content_length = split_segs[1].len();
-                            let response = format!("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: {}\r\n\r\n{}", content_length, body);
-                            let _ = _stream.write(response.as_bytes());
+                            if _path.starts_with("/files") {
+                                
+                            } else {
+                                let body: &str = split_segs[1];
+                                let content_length = split_segs[1].len();
+                                let response = format!("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: {}\r\n\r\n{}", content_length, body);
+                                let _ = _stream.write(response.as_bytes());
+                            }
                         }
                     }
                     _ => {
