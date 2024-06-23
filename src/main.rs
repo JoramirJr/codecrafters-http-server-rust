@@ -1,32 +1,10 @@
 use std::{
+    fs::File,
     io::{Read, Write},
     net::TcpListener,
-    fs::File
 };
 
-struct RetrieveFileReturn<'a> {
-    content_type: &'a str,
-    content_length: u32
-};
-
-fn retrieve_file(path: &str) -> RetrieveFileReturn {
-    let dir_file: Result<File, std::io::Error> = File::open(path);
-
-    match dir_file {
-        Ok(dir_file) => {
-            let mut file_bytes_buf: Vec<u8> = Vec::new();
-            dir_file.read_to_end(&mut file_bytes_buf);
-            RetrieveFileReturn {
-                content_type: "application/octet-stream",
-                content_length: 0
-            }
-        },
-        Err(err) => {
-            
-        }
-    }
-
-}
+use itertools::Itertools;
 
 fn main() {
     let listener: TcpListener = TcpListener::bind("127.0.0.1:4221").unwrap();
@@ -35,7 +13,7 @@ fn main() {
         match stream {
             Ok(mut _stream) => {
                 println!("accepted new connection");
-//
+                //
                 let mut buf = [0; 1024];
                 let _ = _stream.read(&mut buf);
                 let request = String::from_utf8_lossy(&buf[..]);
@@ -44,7 +22,7 @@ fn main() {
                 let _path = req_tokens.next().unwrap();
 
                 match _path.chars().next().unwrap() {
-                    '/' => {=
+                    '/' => {
                         let split_segs: Vec<&str> =
                             _path.split("/").filter(|seg| *seg != "").collect();
                         if split_segs.len() == 0 {
@@ -62,7 +40,20 @@ fn main() {
                             }
                         } else {
                             if _path.starts_with("/files") {
-                                
+                                let dir_file: Result<File, std::io::Error> = File::open(_path);
+
+                                match dir_file {
+                                    Ok(mut dir_file) => {
+                                        let mut file_content: String = String::new();
+                                        let bytes: usize =
+                                            dir_file.read_to_string(&mut file_content).unwrap();
+                                        let response = format!("HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: {}\r\n\r\n{}", bytes, file_content);
+                                        let _ = _stream.write(response.as_bytes());
+                                    }
+                                    Err(_) => {
+                                        let _ = _stream.write(b"HTTP/1.1 404 Not Found\r\n\r\n");
+                                    }
+                                }
                             } else {
                                 let body: &str = split_segs[1];
                                 let content_length = split_segs[1].len();
