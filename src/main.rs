@@ -43,7 +43,9 @@ fn main() {
                                 let path_arr: Vec<&str> = _path.split("/").collect_vec();
                                 let dir_file: Result<File, std::io::Error> =
                                     File::open(path_arr[2]);
-                                    
+
+                                println!("dir_file: {:?}", dir_file);
+
                                 match dir_file {
                                     Ok(mut dir_file) => {
                                         let mut file_content: String = String::new();
