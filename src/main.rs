@@ -33,11 +33,13 @@ fn file_handler(_path: &str, mut _stream: TcpStream, mode: FileHandlingMode) {
                 }
             }
         }
-        FileHandlingMode::Write(_) => {
-            let new_file: Result<File, std::io::Error> = File::create_new(path_arr[2]);
+        FileHandlingMode::Write(req_body) => {
+            let new_file_buffer: Result<File, std::io::Error> = File::create_new(path_arr[2]);
 
-            match new_file {
-                Ok(mut new_file) => {}
+            match new_file_buffer {
+                Ok(mut new_file_buffer) => {
+                    let _ = new_file_buffer.write_all(req_body.as_bytes());
+                }
                 Err(_) => {
                     let _ = _stream.write(b"HTTP/1.1 500 500 Internal Server Error\r\n\r\n");
                 }
@@ -53,7 +55,8 @@ fn main() {
         match stream {
             Ok(mut _stream) => {
                 println!("accepted new connection");
-                let stream_result_bytes: std::io::Bytes<TcpStream> = _stream.try_clone().unwrap().bytes();
+                let stream_result_bytes: std::io::Bytes<TcpStream> =
+                    _stream.try_clone().unwrap().bytes();
                 let stream_result_bytes_vec: Vec<Result<u8, std::io::Error>> =
                     stream_result_bytes.collect_vec();
                 let mut buf: Vec<_> = Vec::new();
@@ -67,11 +70,8 @@ fn main() {
                 let req_lexemes_vec: Vec<&str> = req_lexemes.collect_vec();
                 let _path: &str = req_lexemes_vec[1];
                 let verb: &str = req_lexemes_vec[0];
-
-                println!(
-                    "req split by sig: {:?}",
-                    request.split("\r\n").collect_vec()
-                );
+                let req_split_sig: Vec<&str> = request.split("\r\n").collect_vec();
+                let req_body: &str = req_split_sig[req_split_sig.len() - 1];
 
                 match _path.chars().next().unwrap() {
                     '/' => {
@@ -93,7 +93,7 @@ fn main() {
                         } else {
                             if _path.starts_with("/files") {
                                 if verb == "GET" {
-                                    file_handler(_path, _stream, FileHandlingMode::Write(""));
+                                    file_handler(_path, _stream, FileHandlingMode::Write(req_body));
                                 } else if verb == "POST" {
                                     file_handler(_path, _stream, FileHandlingMode::Read);
                                 }
