@@ -41,7 +41,7 @@ fn main() {
                         } else {
                             if _path.starts_with("/files") {
                                 let dir_file: Result<File, std::io::Error> = File::open(_path);
-
+//
                                 match dir_file {
                                     Ok(mut dir_file) => {
                                         let mut file_content: String = String::new();
