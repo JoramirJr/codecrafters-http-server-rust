@@ -39,11 +39,11 @@ fn main() {
                                 let _ = _stream.write(b"HTTP/1.1 404 Not Found\r\n\r\n");
                             }
                         } else {
-                            let path_arr: Vec<&str> = _path.split("/").collect_vec();
-                            println!("Path: {:?}", path_arr);
                             if _path.starts_with("/files") {
-                                let dir_file: Result<File, std::io::Error> = File::open(_path);
-
+                                let path_arr: Vec<&str> = _path.split("/").collect_vec();
+                                let dir_file: Result<File, std::io::Error> =
+                                    File::open(path_arr[2]);
+                                    
                                 match dir_file {
                                     Ok(mut dir_file) => {
                                         let mut file_content: String = String::new();
