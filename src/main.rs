@@ -65,7 +65,7 @@ fn main() {
                 let mut req_tokens = request.split_whitespace();
                 let _ = req_tokens.next();
                 let _path = req_tokens.next().unwrap();
-                println!("req_tokens: {:?}", req_tokens.collect_vec());
+                println!("request: {:?}", request);
 
                 match _path.chars().next().unwrap() {
                     '/' => {
