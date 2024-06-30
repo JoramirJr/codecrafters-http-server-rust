@@ -39,7 +39,8 @@ fn main() {
                                 let _ = _stream.write(b"HTTP/1.1 404 Not Found\r\n\r\n");
                             }
                         } else {
-                            println!("Path: {:?}", _path.split("/"));
+                            let path_arr: Vec<&str> = _path.split("/").collect_vec();
+                            println!("Path: {:?}", path_arr);
                             if _path.starts_with("/files") {
                                 let dir_file: Result<File, std::io::Error> = File::open(_path);
 
