@@ -63,7 +63,7 @@ fn main() {
                 let _path: &str = req_lexemes_vec[1];
                 let verb: &str = req_lexemes_vec[0];
 
-                println!("req parts: {:?}", req_lexemes_vec);
+                println!("req split by sig: {:?}", request.split("\r\n").collect_vec());
 
                 match _path.chars().next().unwrap() {
                     '/' => {
