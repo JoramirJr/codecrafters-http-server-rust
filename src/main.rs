@@ -42,7 +42,7 @@ fn main() {
                             if _path.starts_with("/files") {
                                 let path_arr: Vec<&str> = _path.split("/").collect_vec();
                                 let dir_file: Result<File, std::io::Error> =
-                                    File::open(format!("{}", path_arr[2]));
+                                    File::open(format!("files/{}", path_arr[2]));
 
                                 match dir_file {
                                     Ok(mut dir_file) => {
