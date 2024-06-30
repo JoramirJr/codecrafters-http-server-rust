@@ -44,7 +44,8 @@ fn main() {
                                 let dir_file: Result<File, std::io::Error> =
                                     File::open(format!("/{}", path_arr[2]));
 
-                                println!("Path: {}", format!("/{}", path_arr[2]));
+                                // println!("Path: {}", format!("/{}", path_arr[2]));
+                                println!("File: {:?}", dir_file);
 
                                 match dir_file {
                                     Ok(mut dir_file) => {
