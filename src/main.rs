@@ -6,49 +6,46 @@ use std::{
 
 use itertools::Itertools;
 
-enum FileHandlingMode {
+enum FileHandlingMode<'a> {
     read,
-    write(String),
+    write(&'a str),
 }
 
 fn file_handler(_path: &str, mut _stream: TcpStream, mode: FileHandlingMode) {
     let path_arr: Vec<&str> = _path.split("/").collect_vec();
 
-    // match mode {
-    //     FileHandlingMode::read => {
-    //         let dir_file: Result<File, std::io::Error> = File::open(format!(
-    //             "/tmp/data/codecrafters.io/http-server-tester/{}",
-    //             path_arr[2]
-    //         ));
+    match mode {
+        FileHandlingMode::read => {
+            let dir_file: Result<File, std::io::Error> = File::open(format!(
+                "/tmp/data/codecrafters.io/http-server-tester/{}",
+                path_arr[2]
+            ));
 
-    //         match dir_file {
-    //             Ok(mut dir_file) => {
-    //                 let mut file_content: String = String::new();
-    //                 let bytes: usize = dir_file.read_to_string(&mut file_content).unwrap();
-    //                 let response = format!("HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: {}\r\n\r\n{}", bytes, file_content);
-    //                 let _ = _stream.write(response.as_bytes());
-    //             }
-    //             Err(_) => {
-    //                 let _ = _stream.write(b"HTTP/1.1 404 Not Found\r\n\r\n");
-    //             }
-    //         }
-    //     }
-    //     FileHandlingMode::write => {
-    //         let new_file: Result<File, std::io::Error> = File::create_new(path_arr[2]);
+            match dir_file {
+                Ok(mut dir_file) => {
+                    let mut file_content: String = String::new();
+                    let bytes: usize = dir_file.read_to_string(&mut file_content).unwrap();
+                    let response = format!("HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: {}\r\n\r\n{}", bytes, file_content);
+                    let _ = _stream.write(response.as_bytes());
+                }
+                Err(_) => {
+                    let _ = _stream.write(b"HTTP/1.1 404 Not Found\r\n\r\n");
+                }
+            }
+        }
+        FileHandlingMode::write(_) => {
+            let new_file: Result<File, std::io::Error> = File::create_new(path_arr[2]);
 
-    //         match dir_file {
-    //             Ok(mut dir_file) => {
-    //                 let mut file_content: String = String::new();
-    //                 let bytes: usize = dir_file.read_to_string(&mut file_content).unwrap();
-    //                 let response = format!("HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: {}\r\n\r\n{}", bytes, file_content);
-    //                 let _ = _stream.write(response.as_bytes());
-    //             }
-    //             Err(_) => {
-    //                 let _ = _stream.write(b"HTTP/1.1 404 Not Found\r\n\r\n");
-    //             }
-    //         }
-    //     }
-    // }
+            match new_file {
+                Ok(mut new_file) => {
+
+                }
+                Err(_) => {
+                    let _ = _stream.write(b"HTTP/1.1 500 500 Internal Server Error\r\n\r\n");
+                }
+            }
+        }
+    }
 }
 
 fn main() {
@@ -61,9 +58,12 @@ fn main() {
                 let mut buf: [u8; 1024] = [0; 1024];
                 let _ = _stream.read(&mut buf);
                 let request: std::borrow::Cow<str> = String::from_utf8_lossy(&buf[..]);
-                let req_lexemes: Vec<&str> = request.split_whitespace().collect_vec();
-                let _path: &str = req_lexemes[1];
-                println!("Verb: {:?}", req_lexemes[0]);
+                let req_lexemes: std::str::SplitWhitespace = request.split_whitespace();
+                let req_lexemes_vec: Vec<&str> = req_lexemes.collect_vec();
+                let _path: &str = req_lexemes_vec[1];
+                let verb: &str = req_lexemes_vec[0];
+
+                println!("req parts: {:?}", req_lexemes_vec);
 
                 match _path.chars().next().unwrap() {
                     '/' => {
@@ -84,7 +84,11 @@ fn main() {
                             }
                         } else {
                             if _path.starts_with("/files") {
-                                file_handler(_path, _stream, FileHandlingMode::read);
+                                if verb == "GET" {
+                                    file_handler(_path, _stream, FileHandlingMode::write(""));
+                                } else if verb == "POST" {
+                                    file_handler(_path, _stream, FileHandlingMode::read);
+                                }
                             } else {
                                 let body: &str = split_segs[1];
                                 let content_length = split_segs[1].len();
