@@ -20,7 +20,7 @@ fn file_handler(_path: &str, mut _stream: TcpStream, mode: FileHandlingMode) {
     //             "/tmp/data/codecrafters.io/http-server-tester/{}",
     //             path_arr[2]
     //         ));
-    
+
     //         match dir_file {
     //             Ok(mut dir_file) => {
     //                 let mut file_content: String = String::new();
@@ -49,7 +49,6 @@ fn file_handler(_path: &str, mut _stream: TcpStream, mode: FileHandlingMode) {
     //         }
     //     }
     // }
-
 }
 
 fn main() {
@@ -59,13 +58,12 @@ fn main() {
         match stream {
             Ok(mut _stream) => {
                 println!("accepted new connection");
-                let mut buf = [0; 1024];
+                let mut buf: [u8; 1024] = [0; 1024];
                 let _ = _stream.read(&mut buf);
-                let request = String::from_utf8_lossy(&buf[..]);
-                let mut req_tokens = request.split_whitespace();
-                let _ = req_tokens.next();
-                let _path = req_tokens.next().unwrap();
-                println!("request: {:?}", request);
+                let request: std::borrow::Cow<str> = String::from_utf8_lossy(&buf[..]);
+                let req_lexemes: Vec<&str> = request.split_whitespace().collect_vec();
+                let _path: &str = req_lexemes[1];
+                println!("Verb: {:?}", req_lexemes[0]);
 
                 match _path.chars().next().unwrap() {
                     '/' => {
