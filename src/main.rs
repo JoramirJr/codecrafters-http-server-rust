@@ -7,15 +7,15 @@ use std::{
 use itertools::Itertools;
 
 enum FileHandlingMode<'a> {
-    read,
-    write(&'a str),
+    Read,
+    Write(&'a str),
 }
 
 fn file_handler(_path: &str, mut _stream: TcpStream, mode: FileHandlingMode) {
     let path_arr: Vec<&str> = _path.split("/").collect_vec();
 
     match mode {
-        FileHandlingMode::read => {
+        FileHandlingMode::Read => {
             let dir_file: Result<File, std::io::Error> = File::open(format!(
                 "/tmp/data/codecrafters.io/http-server-tester/{}",
                 path_arr[2]
@@ -33,12 +33,12 @@ fn file_handler(_path: &str, mut _stream: TcpStream, mode: FileHandlingMode) {
                 }
             }
         }
-        FileHandlingMode::write(_) => {
-            let new_file: Result<File, std::io::Error> = File::create_new(path_arr[2]);
+        FileHandlingMode::Write(req_body) => {
+            let new_file_buffer: Result<File, std::io::Error> = File::create_new(path_arr[2]);
 
-            match new_file {
-                Ok(mut new_file) => {
-
+            match new_file_buffer {
+                Ok(mut new_file_buffer) => {
+                    let _ = new_file_buffer.write_all(req_body.as_bytes());
                 }
                 Err(_) => {
                     let _ = _stream.write(b"HTTP/1.1 500 500 Internal Server Error\r\n\r\n");
@@ -55,20 +55,27 @@ fn main() {
         match stream {
             Ok(mut _stream) => {
                 println!("accepted new connection");
-                let mut buf: [u8; 1024] = [0; 1024];
+                let stream_result_bytes: std::io::Bytes<TcpStream> = _stream.bytes()
+                let stream_result_bytes_vec: Vec<Result<u8, std::io::Error>> =
+                    stream_result_bytes.collect_vec();
+                let mut buf: Vec<_> = Vec::new();
+                for u8_result in stream_result_bytes_vec {
+                    let chunk: u8 = u8_result.unwrap();
+                    buf.push(chunk);
+                }
                 let _ = _stream.read(&mut buf);
                 let request: std::borrow::Cow<str> = String::from_utf8_lossy(&buf);
                 let req_lexemes: std::str::SplitWhitespace = request.split_whitespace();
                 let req_lexemes_vec: Vec<&str> = req_lexemes.collect_vec();
                 let _path: &str = req_lexemes_vec[1];
                 let verb: &str = req_lexemes_vec[0];
-
-                println!("req split by sig: {:?}", request.split("\r\n").collect_vec());
+                let req_split_sig: Vec<&str> = request.split("\r\n").collect_vec();
+                let req_body: &str = req_split_sig[req_split_sig.len() - 1];
 
                 match _path.chars().next().unwrap() {
                     '/' => {
                         let split_segs: Vec<&str> =
-                            _path.split("/").filter(|seg| *seg != "").collect();
+                            _path.split("/").filter(|seg: &&str| *seg != "").collect();
                         if split_segs.len() == 0 {
                             let _ = _stream.write(b"HTTP/1.1 200 OK\r\n\r\n");
                         } else if split_segs.len() == 1 {
@@ -85,9 +92,9 @@ fn main() {
                         } else {
                             if _path.starts_with("/files") {
                                 if verb == "GET" {
-                                    file_handler(_path, _stream, FileHandlingMode::write(""));
+                                    file_handler(_path, _stream, FileHandlingMode::Write(req_body));
                                 } else if verb == "POST" {
-                                    file_handler(_path, _stream, FileHandlingMode::read);
+                                    file_handler(_path, _stream, FileHandlingMode::Read);
                                 }
                             } else {
                                 let body: &str = split_segs[1];
