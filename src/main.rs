@@ -55,16 +55,15 @@ fn main() {
         match stream {
             Ok(mut _stream) => {
                 println!("accepted new connection");
-                // let stream_result_bytes: std::io::Bytes<TcpStream> = _stream.bytes()
-                // let stream_result_bytes_vec: Vec<Result<u8, std::io::Error>> =
-                //     stream_result_bytes.collect_vec();
-                // let mut buf: Vec<_> = Vec::new();
-                // for u8_result in stream_result_bytes_vec {
-                //     let chunk: u8 = u8_result.unwrap();
-                //     buf.push(chunk);
-                // }
-                //
-                let mut buf: [u8; 1024] = [0; 1024];
+                let stream_result_bytes: std::io::Bytes<TcpStream> = _stream.bytes()
+                let stream_result_bytes_vec: Vec<Result<u8, std::io::Error>> =
+                    stream_result_bytes.collect_vec();
+                let mut buf: Vec<_> = Vec::new();
+                for u8_result in stream_result_bytes_vec {
+                    let chunk: u8 = u8_result.unwrap();
+                    buf.push(chunk);
+                }  
+                // let mut buf: [u8; 1024] = [0; 1024];
                 let _ = _stream.read(&mut buf);
                 let request: std::borrow::Cow<str> = String::from_utf8_lossy(&buf);
                 let req_lexemes: std::str::SplitWhitespace = request.split_whitespace();
