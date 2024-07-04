@@ -55,7 +55,7 @@ fn main() {
         match stream {
             Ok(mut _stream) => {
                 println!("accepted new connection");
-                let stream_result_bytes: std::io::Bytes<TcpStream> = _stream.bytes()
+                let stream_result_bytes: std::io::Bytes<TcpStream> = _stream.try_clone().unwrap().bytes();
                 let stream_result_bytes_vec: Vec<Result<u8, std::io::Error>> =
                     stream_result_bytes.collect_vec();
                 let mut buf: Vec<_> = Vec::new();
