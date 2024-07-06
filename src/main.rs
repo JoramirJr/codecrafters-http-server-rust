@@ -56,13 +56,13 @@ fn main() {
             Ok(mut _stream) => {
                 println!("accepted new connection");
                 let stream_bytes = _stream.try_clone().unwrap().bytes();
-                let mut buf = stream_bytes
-                    .map(|r| r.unwrap());
-                    // .collect_vec();
-                //  let buf_len = buf.len();
-                //  let buf_slice: &mut [u8] = &mut buf[0..buf_len];
+                let mut buf: Vec<u8> = stream_bytes
+                    .map(|r| r.unwrap())
+                    .collect();
+                 let buf_len = buf.len();
+                 let buf_slice: &mut [u8] = &mut buf[0..buf_len];
                 // let mut buf: [u8; 1024] = [0; 1024];
-                //  let _ = _stream.read(&mut buf_slice[..]);
+                 let _ = _stream.read(&mut buf_slice[..]);
                 //  let request: std::borrow::Cow<str> = String::from_utf8_lossy(&buf);
                 //  let req_lexemes: std::str::SplitWhitespace = request.split_whitespace();
                 //  let req_lexemes_vec: Vec<&str> = req_lexemes.collect_vec();
