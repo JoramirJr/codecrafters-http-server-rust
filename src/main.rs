@@ -66,52 +66,52 @@ fn main() {
                 // let mut buf_slice: &mut [u8] = &mut buf[0..buf_len];
                 let mut buf: [u8; 1024] = [0; 1024];
                 let _ = _stream.read(&mut buf[..]);
-                let request: std::borrow::Cow<str> = String::from_utf8_lossy(&buf);
-                let req_lexemes: std::str::SplitWhitespace = request.split_whitespace();
-                let req_lexemes_vec: Vec<&str> = req_lexemes.collect_vec();
-                let _path: &str = req_lexemes_vec[1];
+                // let request: std::borrow::Cow<str> = String::from_utf8_lossy(&buf);
+                // let req_lexemes: std::str::SplitWhitespace = request.split_whitespace();
+                // let req_lexemes_vec: Vec<&str> = req_lexemes.collect_vec();
+                // let _path: &str = req_lexemes_vec[1];
                 // let verb: &str = req_lexemes_vec[0];
                 // let req_split_sig: Vec<&str> = request.split("\r\n").collect_vec();
                 // let req_body: &str = req_split_sig[req_split_sig.len() - 1];
 
                 println!("Stream after bytes call: {:?}", _stream);
 
-                match _path.chars().next().unwrap() {
-                    '/' => {
-                        let split_segs: Vec<&str> =
-                            _path.split("/").filter(|seg: &&str| *seg != "").collect();
-                        if split_segs.len() == 0 {
-                            let _ = _stream.write(b"HTTP/1.1 200 OK\r\n\r\n");
-                        } else if split_segs.len() == 1 {
-                            if split_segs[0] == "user-agent" {
-                                let req_lines: Vec<&str> = request.split("\r\n").collect_vec();
-                                let user_agent = req_lines[2];
-                                let body = user_agent.split(": ").collect_vec()[1];
-                                let content_length = body.len();
-                                let response = format!("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: {}\r\n\r\n{}", content_length, body);
-                                let _ = _stream.write(response.as_bytes());
-                            } else {
-                                let _ = _stream.write(b"HTTP/1.1 404 Not Found\r\n\r\n");
-                            }
-                        } else {
-                            if _path.starts_with("/files") {
-                                // if verb == "GET" {
-                                //     file_handler(_path, _stream, FileHandlingMode::Write(req_body));
-                                // } else if verb == "POST" {
-                                //     file_handler(_path, _stream, FileHandlingMode::Read);
-                                // }
-                            } else {
-                                let body: &str = split_segs[1];
-                                let content_length = split_segs[1].len();
-                                let response = format!("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: {}\r\n\r\n{}", content_length, body);
-                                let _ = _stream.write(response.as_bytes());
-                            }
-                        }
-                    }
-                    _ => {
-                        let _ = _stream.write(b"HTTP/1.1 404 Not Found\r\n\r\n");
-                    }
-                }
+                // match _path.chars().next().unwrap() {
+                //     '/' => {
+                //         let split_segs: Vec<&str> =
+                //             _path.split("/").filter(|seg: &&str| *seg != "").collect();
+                //         if split_segs.len() == 0 {
+                //             let _ = _stream.write(b"HTTP/1.1 200 OK\r\n\r\n");
+                //         } else if split_segs.len() == 1 {
+                //             if split_segs[0] == "user-agent" {
+                //                 let req_lines: Vec<&str> = request.split("\r\n").collect_vec();
+                //                 let user_agent = req_lines[2];
+                //                 let body = user_agent.split(": ").collect_vec()[1];
+                //                 let content_length = body.len();
+                //                 let response = format!("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: {}\r\n\r\n{}", content_length, body);
+                //                 let _ = _stream.write(response.as_bytes());
+                //             } else {
+                //                 let _ = _stream.write(b"HTTP/1.1 404 Not Found\r\n\r\n");
+                //             }
+                //         } else {
+                //             if _path.starts_with("/files") {
+                //                 // if verb == "GET" {
+                //                 //     file_handler(_path, _stream, FileHandlingMode::Write(req_body));
+                //                 // } else if verb == "POST" {
+                //                 //     file_handler(_path, _stream, FileHandlingMode::Read);
+                //                 // }
+                //             } else {
+                //                 let body: &str = split_segs[1];
+                //                 let content_length = split_segs[1].len();
+                //                 let response = format!("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: {}\r\n\r\n{}", content_length, body);
+                //                 let _ = _stream.write(response.as_bytes());
+                //             }
+                //         }
+                //     }
+                //     _ => {
+                //         let _ = _stream.write(b"HTTP/1.1 404 Not Found\r\n\r\n");
+                //     }
+                // }
             }
             Err(e) => {
                 println!("error: {}", e);
