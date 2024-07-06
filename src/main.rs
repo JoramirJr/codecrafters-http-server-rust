@@ -13,7 +13,7 @@ enum FileHandlingMode<'a> {
 
 fn file_handler(_path: &str, mut _stream: TcpStream, mode: FileHandlingMode) {
     let path_arr: Vec<&str> = _path.split("/").collect_vec();
-
+    println!("INSIDE FILE HANDLER");
     match mode {
         FileHandlingMode::Read => {
             println!("INTO THE FILE HANDLER, READ MODE");
@@ -85,7 +85,6 @@ fn main() {
                             }
                         } else {
                             if _path.starts_with("/files") {
-                                println!("PATH STARTS WITH FILES");
                                 if verb == "GET" {
                                     file_handler(_path, _stream, FileHandlingMode::Read);
                                 } else if verb == "POST" {
