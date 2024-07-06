@@ -16,6 +16,7 @@ fn file_handler(_path: &str, mut _stream: TcpStream, mode: FileHandlingMode) {
 
     match mode {
         FileHandlingMode::Read => {
+            println!("INTO THE FILE HANDLER, READ MODE");
             let dir_file: Result<File, std::io::Error> = File::open(format!(
                 "/tmp/data/codecrafters.io/http-server-tester/{}",
                 path_arr[2]
