@@ -5,7 +5,7 @@ use std::{
 };
 
 use itertools::Itertools;
-
+#[derive(Debug)]
 enum FileHandlingMode<'a> {
     Read,
     Write(&'a str),
@@ -13,7 +13,7 @@ enum FileHandlingMode<'a> {
 
 fn file_handler(_path: &str, mut _stream: TcpStream, mode: FileHandlingMode) {
     let path_arr: Vec<&str> = _path.split("/").collect_vec();
-    println!("INSIDE FILE HANDLER");
+    println!("Mode: {:?}", mode);
     match mode {
         FileHandlingMode::Read => {
             println!("INTO THE FILE HANDLER, READ MODE");
