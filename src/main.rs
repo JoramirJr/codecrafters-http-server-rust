@@ -59,8 +59,8 @@ fn main() {
                 println!("accepted new connection");
                 let mut buf: [u8; 1024] = [0; 1024];
                 let _ = _stream.read(&mut buf[..]);
-                // let request: std::borrow::Cow<str> = String::from_utf8_lossy(&buf);
-                // let req_lexemes: std::str::SplitWhitespace = request.split_whitespace();
+                let request: std::borrow::Cow<str> = String::from_utf8_lossy(&buf);
+                let req_lexemes: std::str::SplitWhitespace = request.split_whitespace();
                 // let req_lexemes_vec: Vec<&str> = req_lexemes.collect_vec();
                 // let _path: &str = req_lexemes_vec[1];
                 // let verb: &str = req_lexemes_vec[0];
