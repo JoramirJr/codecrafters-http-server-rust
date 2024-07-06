@@ -85,7 +85,7 @@ fn main() {
                             }
                         } else {
                             if _path.starts_with("/files") {
-                                println!("PATH STARTS WITH FILES")
+                                println!("PATH STARTS WITH FILES");
                                 if verb == "GET" {
                                     file_handler(_path, _stream, FileHandlingMode::Read);
                                 } else if verb == "POST" {
