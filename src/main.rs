@@ -4,6 +4,7 @@ use std::{
     net::{TcpListener, TcpStream},
 };
 
+use bytes::buf;
 use itertools::Itertools;
 
 enum FileHandlingMode<'a> {
@@ -55,16 +56,16 @@ fn main() {
         match stream {
             Ok(mut _stream) => {
                 println!("accepted new connection");
-                let stream_result_bytes: std::io::Bytes<TcpStream> = _stream.try_clone().unwrap().bytes();
-                let stream_result_bytes_vec: Vec<Result<u8, std::io::Error>> =
-                    stream_result_bytes.collect_vec();
-                let mut buf: Vec<_> = Vec::new();
-                for u8_result in stream_result_bytes_vec {
-                    let chunk: u8 = u8_result.unwrap();
-                    buf.push(chunk);
-                }  
-                // let mut buf: [u8; 1024] = [0; 1024];
-                let _ = _stream.read(&mut buf);
+                println!("Stream before bytes call: {:?}", _stream);
+                let stream_bytes = _stream.try_clone().unwrap().bytes().collect_vec();
+                // let mut buf = Vec::from(stream_bytes)
+                //     .iter()
+                //     .map(|r: &Result<u8, std::io::Error>| r.unwrap())
+                //     .collect_vec();
+                // let buf_len = buf.len();
+                // let mut buf_slice: &mut [u8] = &mut buf[0..buf_len];
+                let mut buf: [u8; 1024] = [0; 1024];
+                let _ = _stream.read(&mut buf[..]);
                 let request: std::borrow::Cow<str> = String::from_utf8_lossy(&buf);
                 let req_lexemes: std::str::SplitWhitespace = request.split_whitespace();
                 let req_lexemes_vec: Vec<&str> = req_lexemes.collect_vec();
@@ -72,6 +73,8 @@ fn main() {
                 let verb: &str = req_lexemes_vec[0];
                 let req_split_sig: Vec<&str> = request.split("\r\n").collect_vec();
                 let req_body: &str = req_split_sig[req_split_sig.len() - 1];
+
+                println!("Stream after bytes call: {:?}", _stream);
 
                 match _path.chars().next().unwrap() {
                     '/' => {
