@@ -39,7 +39,9 @@ fn file_handler(_path: &str, mut _stream: TcpStream, mode: FileHandlingMode) {
 
             match new_file_buffer {
                 Ok(mut new_file_buffer) => {
-                    let _ = new_file_buffer.write_all(req_body.as_bytes());
+                    let value_to_write: String = req_body.chars().filter(|c| *c != '0').collect();
+                    let _ = new_file_buffer.write_all(value_to_write.as_bytes());
+                    let _ = _stream.write(b"HTTP/1.1 201 Created\r\n\r\n");
                 }
                 Err(_) => {
                     let _ = _stream.write(b"HTTP/1.1 500 500 Internal Server Error\r\n\r\n");
