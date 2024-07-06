@@ -75,6 +75,7 @@ fn main() {
                 // let req_body: &str = req_split_sig[req_split_sig.len() - 1];
 
                 println!("Stream after bytes call: {:?}", _stream);
+                let _ = _stream.write(b"HTTP/1.1 404 Not Found\r\n\r\n");
 
                 // match _path.chars().next().unwrap() {
                 //     '/' => {
