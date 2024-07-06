@@ -57,7 +57,7 @@ fn main() {
             Ok(mut _stream) => {
                 println!("accepted new connection");
                 println!("Stream before bytes call: {:?}", _stream);
-                let stream_bytes = _stream.bytes().collect_vec();
+                let stream_bytes = _stream.try_clone().unwrap().bytes().collect_vec();
                 // let mut buf = Vec::from(stream_bytes)
                 //     .iter()
                 //     .map(|r: &Result<u8, std::io::Error>| r.unwrap())
@@ -65,7 +65,7 @@ fn main() {
                 // let buf_len = buf.len();
                 // let mut buf_slice: &mut [u8] = &mut buf[0..buf_len];
                 let mut buf: [u8; 1024] = [0; 1024];
-                let _ = _stream.read(&mut buf[..]);
+                // let _ = _stream.read(&mut buf[..]);
                 // let request: std::borrow::Cow<str> = String::from_utf8_lossy(&buf);
                 // let req_lexemes: std::str::SplitWhitespace = request.split_whitespace();
                 // let req_lexemes_vec: Vec<&str> = req_lexemes.collect_vec();
