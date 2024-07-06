@@ -85,9 +85,9 @@ fn main() {
                         } else {
                             if _path.starts_with("/files") {
                                 if verb == "GET" {
-                                    file_handler(_path, _stream, FileHandlingMode::Write(req_body));
-                                } else if verb == "POST" {
                                     file_handler(_path, _stream, FileHandlingMode::Read);
+                                } else if verb == "POST" {
+                                    file_handler(_path, _stream, FileHandlingMode::Write(req_body));
                                 }
                             } else {
                                 let body: &str = split_segs[1];
