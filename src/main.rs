@@ -57,7 +57,7 @@ fn main() {
             Ok(mut _stream) => {
                 println!("accepted new connection");
                 println!("Stream before bytes call: {:?}", _stream);
-                // let stream_bytes = _stream.try_clone().unwrap().bytes().collect_vec();
+                let stream_bytes = _stream.bytes().collect_vec();
                 // let mut buf = Vec::from(stream_bytes)
                 //     .iter()
                 //     .map(|r: &Result<u8, std::io::Error>| r.unwrap())
