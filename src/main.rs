@@ -61,7 +61,7 @@ fn main() {
                 let _ = _stream.read(&mut buf[..]);
                 let request: std::borrow::Cow<str> = String::from_utf8_lossy(&buf);
                 let req_lexemes: std::str::SplitWhitespace = request.split_whitespace();
-                // let req_lexemes_vec: Vec<&str> = req_lexemes.collect_vec();
+                let req_lexemes_vec: Vec<&str> = req_lexemes.collect_vec();
                 // let _path: &str = req_lexemes_vec[1];
                 // let verb: &str = req_lexemes_vec[0];
                 // let req_split_sig: Vec<&str> = request.split("\r\n").collect_vec();
