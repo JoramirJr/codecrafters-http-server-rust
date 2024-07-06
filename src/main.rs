@@ -13,7 +13,6 @@ enum FileHandlingMode<'a> {
 
 fn file_handler(_path: &str, mut _stream: TcpStream, mode: FileHandlingMode) {
     let path_arr: Vec<&str> = _path.split("/").collect_vec();
-    println!("path_arr_2: {}", path_arr[2]);
     match mode {
         FileHandlingMode::Read => {
             let dir_file: Result<File, std::io::Error> = File::open(format!(
@@ -34,7 +33,10 @@ fn file_handler(_path: &str, mut _stream: TcpStream, mode: FileHandlingMode) {
             }
         }
         FileHandlingMode::Write(req_body) => {
-            let new_file_buffer: Result<File, std::io::Error> = File::create_new(path_arr[2]);
+            let new_file_buffer: Result<File, std::io::Error> = File::create_new(format!(
+                "/tmp/data/codecrafters.io/http-server-tester/{}",
+                path_arr[2]
+            ));
 
             match new_file_buffer {
                 Ok(mut new_file_buffer) => {
